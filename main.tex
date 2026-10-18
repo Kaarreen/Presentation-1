@@ -1,0 +1,629 @@
+\documentclass[10pt,aspectratio=169]{beamer}
+% Self-contained source.
+% Source: Hoitash, Hoitash, Kurt and Verdi (2023), The Accounting Review 98(6), 253--281.
+% Reference: the attached _3Presentation_vf.pdf (26-slide revised Chen deck).
+% Tables are selected, re-typeset excerpts; original column identifiers and units are retained.
+% Presenter assessments and proposed studies are explicitly labelled.
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs,tabularx,array,amsmath}
+\definecolor{Stern}{HTML}{57068C}
+\definecolor{Ink}{HTML}{20202D}
+\definecolor{Teal}{HTML}{007D86}
+\definecolor{Caution}{HTML}{AA5200}
+\definecolor{Muted}{HTML}{5D6070}
+\setbeamercolor{normal text}{fg=Ink,bg=white}
+\setbeamercolor{frametitle}{fg=white,bg=Stern}
+\setbeamercolor{structure}{fg=Stern}
+\setbeamercolor{alerted text}{fg=Teal}
+\setbeamerfont{frametitle}{size=\large,series=\mdseries}
+\setbeamerfont{normal text}{size=\normalsize}
+\setbeamersize{text margin left=6mm,text margin right=6mm}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize item}{\scriptsize\raise1pt\hbox{$\blacksquare$}}
+% Roadmap navigation appears above the title on slides 2 onward.
+% The current section is purple, completed sections pale purple, upcoming sections gray.
+% Every segment links to a named first frame, so links survive slide insertions.
+\newcommand{\roadmapitem}[2]{%
+  \ifnum\value{section}=#1\relax
+    \setbeamercolor{roadmap item}{fg=white,bg=Stern}%
+  \else\ifnum\value{section}>#1\relax
+    \setbeamercolor{roadmap item}{fg=Stern,bg=Stern!10}%
+  \else
+    \setbeamercolor{roadmap item}{fg=Muted,bg=black!4}%
+  \fi\fi
+  \begin{beamercolorbox}[wd=.2\paperwidth,ht=3.8mm,dp=1.4mm,center]{roadmap item}%
+    \fontsize{6.5}{7.5}\selectfont
+    \ifnum\value{section}=#1\relax\bfseries\fi
+    \hyperlink{roadmap-section-#1}{%
+      \makebox[.2\paperwidth][c]{\rule[-1.4mm]{0pt}{5.2mm}#2}%
+    }%
+  \end{beamercolorbox}%
+}
+\newcommand{\roadmapbar}{%
+  \ifnum\value{framenumber}>1\relax
+    \hbox{%
+      \roadmapitem{1}{Question \& predictions}%
+      \roadmapitem{2}{Measure \& design}%
+      \roadmapitem{3}{Main evidence}%
+      \roadmapitem{4}{Contribution \& limitations}%
+      \roadmapitem{5}{Future research}%
+    }%
+    \nointerlineskip
+  \else
+    \vbox to5.2mm{\vfil}% Reserve the same height on the cover.
+  \fi
+}
+\setbeamertemplate{headline}{\roadmapbar}
+\setbeamertemplate{frametitle}{\nointerlineskip\begin{beamercolorbox}[wd=\paperwidth,leftskip=6mm,rightskip=5mm,sep=2.7mm]{frametitle}\usebeamerfont{frametitle}\insertframetitle\strut\end{beamercolorbox}}
+\setbeamertemplate{footline}{\hfill\usebeamercolor[fg]{normal text}\color{Muted}\scriptsize\insertframenumber\,/\,\inserttotalframenumber\hspace{6mm}\vspace{2.5mm}}
+\setlength{\parskip}{3pt}
+\renewcommand{\arraystretch}{1.18}
+\newcommand{\hi}[1]{{\color{Teal}\textbf{#1}}}
+\newcommand{\warn}[1]{{\color{Caution}\textbf{#1}}}
+\newcommand{\captext}[1]{\par\vspace{2mm}{\fontsize{7.5}{9}\selectfont\color{Muted}#1\par}}
+\newcommand{\imp}[1]{\par\vspace{2mm}\textbf{\color{Stern}Implication:} #1\par}
+\newcommand{\assess}{\textbf{\color{Caution}Presenter assessment.}\ }
+\newcommand{\sourced}[1]{\vfill\captext{#1}}
+\newenvironment{bullets}{\begin{itemize}\setlength{\itemsep}{7pt}}{\end{itemize}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\title{A Measure of Financial Statement Benchmarking}
+\author{Rani Hoitash \and Udi Hoitash \and Ahmet C. Kurt \and Rodrigo S. Verdi}
+\date{October 13, 2026}
+\begin{document}
+% Slide 1
+\begin{frame}
+\vspace{6mm}
+\begin{beamercolorbox}[wd=\textwidth,sep=5mm,center]{frametitle}
+\Large A Measure of Financial Statement Benchmarking
+\end{beamercolorbox}
+\vspace{4mm}
+\begin{center}
+Rani Hoitash, Udi Hoitash, Ahmet C. Kurt, Rodrigo S. Verdi\\[3mm]
+\small \emph{The Accounting Review}, 98(6), 253--281 (2023)\\[5mm]
+\normalsize Presenter: Jingying Wang\\[2mm]
+\small October 19, 2026
+\end{center}
+\end{frame}
+
+\section{Question and predictions}
+
+% Slide 2
+\begin{frame}[label=roadmap-section-1]{Overview: Line-item overlap helps assess the peers people choose}
+\begin{bullets}
+\item \textbf{RQ:} Can overlap in reported financial statement items help identify useful peers and flag questionable benchmarking choices?
+\item \textbf{Why care?} Peer selection shapes earnings forecasts, company valuations, and the pay benchmarks used for CEOs.
+\item \textbf{Main findings:} Higher overlap is associated with peer selection. Lower overlap among chosen peers is associated with favorable peer comparisons, forecast optimism, and model-based CEO overpay.
+\item \textbf{Main contribution:} A transparent measure of \hi{benchmarkability}; the evidence about \hi{strategic intent} is less conclusive.
+\end{bullets}
+
+\end{frame}
+
+% Slide 3
+\begin{frame}{A familiar industry label does not guarantee a useful comparison}
+\begin{bullets}
+\item \textbf{Imagine two clothing companies:} One makes its products; the other buys finished products from suppliers. They may share an industry and similar sales.
+\item \textbf{Their statements may differ:} The manufacturer reports raw materials and work in process; the buyer may provide only a combined purchased-inventory figure.
+\item \textbf{The practical problem:} A comparison of production-stage inventory is harder when the peer does not separately report the relevant items.
+\item \textbf{Why it matters:} Choosing a peer requires asking what can actually be compared in its financial statements.
+\end{bullets}
+\end{frame}
+
+
+
+
+% Slide 4
+\begin{frame}{Prior research links peer choice to similarity and incentives}
+\begin{bullets}
+\item \textbf{Similarity in businesses and financial profiles:} Traditional approaches use industry classification and firm characteristics and ratios (Bhojraj, Lee, and Oler, 2003; Hoberg and Phillips, 2016; Ecker et al., 2013). 
+\item \textbf{Peers revealed by users' behavior :} Investor co-search/wisdom of the crowd (Lee, Ma, and Wang, 2015) and analyst co-coverage (Ramnath, 2002) identify firms that users treat as related.
+\item \textbf{Line items reporting similarity:} reporting similarity is linked to analyst performance, auditor style, and SEC scrutiny (Caylor et al., 2022; Henry et al., 2022; Johnston and Zhang, 2021; Brown et al., 2023).
+\item \textbf{Incentives can influence the choice:} Analysts may favor high-valuation peers (De Franco et al., 2015); boards may select high-pay peers (Bizjak et al., 2011). Competition for CEO talent is a competing explanation (Albuquerque et al., 2013).
+\end{bullets}
+This paper emphasizes \hi{pairwise benchmarkability}: how suitable is Firm B as a financial statement benchmark for Firm A?
+\end{frame}
+
+% Slide 5
+\begin{frame}{Decision-makers may trade a useful comparison for a favorable one}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{.47\textwidth}
+\textbf{A reason to choose similar peers}
+\begin{itemize}\setlength{\itemsep}{5pt}
+\item Common items make comparison easier.
+\item Analysts want informative forecasts and valuations.
+\item Boards want relevant benchmarks for performance and pay.
+\end{itemize}
+\end{column}
+\begin{column}{.47\textwidth}
+\textbf{A reason to compromise similarity}
+\begin{itemize}\setlength{\itemsep}{5pt}
+\item High-valuation peers can make the focal firm appear cheap.
+\item High-pay peers can justify a larger CEO package.
+\item Attractive comparisons may outweigh benchmarkability.
+\end{itemize}
+\end{column}
+\end{columns}
+\imp{Low overlap can be a warning sign, but legitimate growth prospects or competition for CEO talent can also justify different peers.}
+\sourced{Competing explanations: efficient contracting and strategic selection}
+\end{frame}
+
+% Slide 6
+\begin{frame}{The paper asks whether reporting overlap validates and improves benchmarking}
+\begin{bullets}
+\item \textbf{RQ1 -- Measure validation:} Are firms with greater financial statement overlap more likely to be selected as peers by analysts and boards?
+\item \textbf{RQ2 -- Strategic peer selection:} Among chosen peers, is lower pairwise Financial Statement Benchmarking (FSB) associated with a higher likelihood of strategic selection by analysts and boards?
+\item \textbf{RQ3 -- Benchmarking outcomes:} Is lower average FSB in the chosen peer group associated with greater analyst forecast optimism and CEO overpay?
+\item \textbf{RQ4 -- Additional applications:} Does FSB add information to peer-based valuation and other benchmarking tasks?
+\end{bullets}
+\sourced{Notes: pairwise FSB measures overlap in two firms' reported line items; peer-group FSB averages these pairwise scores across chosen peers.}
+\end{frame}
+
+% Slide 7
+\begin{frame}{Four hypotheses address strategic peer selection and its outcomes}
+\begin{bullets}
+\item \textbf{H1 (RQ2) -- Analysts' peer choices:} Lower pairwise FSB is associated with a higher likelihood of a strategic peer choice by an analyst.
+\item \textbf{H2 (RQ3) -- Analysts' forecasts:} Lower average FSB in an analyst's chosen peer group is associated with greater earnings-per-share forecast optimism.
+\item \textbf{H3 (RQ2) -- Boards' peer choices:} Lower pairwise FSB is associated with a higher likelihood of a strategic compensation peer choice by a corporate board.
+\item \textbf{H4 (RQ3) -- CEO pay:} Lower average FSB in a board's chosen compensation peer group is associated with greater CEO overpay.
+\end{bullets}
+
+\end{frame}
+
+\section{Measure and design}
+
+% Slide 8
+\begin{frame}[label=roadmap-section-2]{Overlap reflects both business activities and accounting choices}
+\small
+\begin{tabularx}{\textwidth}{P{.22\textwidth}YY}
+\toprule
+\textbf{Compared with a manufacturer using LIFO} & \textbf{Peer also manufactures} & \textbf{Peer buys finished goods}\\
+\midrule
+\textbf{Same inventory method: LIFO} & \hi{High FSB}: same illustrated inventory accounts. & Moderate FSB: less overlap in inventory detail.\\
+\textbf{Different method: FIFO / average cost} & Moderate FSB: no LIFO reserve for the peer. & \warn{Low FSB}: both inventory detail and the reserve differ.\\
+\bottomrule
+\end{tabularx}
+\captext{Adapted from Table A1, p. 278. LIFO expenses newer inventory costs first; FIFO expenses older costs first. A LIFO reserve reconciles LIFO inventory with FIFO inventory. High/moderate/low are qualitative, not estimated scores.}
+\imp{FSB combines economic similarity and reporting similarity; it does not separate the two.}
+\sourced{The appendix notes that total inventory can still be compared after aggregation. Detailed inventory composition may be harder to benchmark.}
+\end{frame}
+
+
+% Slide 9
+\begin{frame}{Build a yearly checklist, mark each firm, then compare the marks}
+\small
+\textbf{1. Build the year's checklist.} Collect items reported with nonmissing, nonzero values across firms, keeping only balance-sheet, income-statement, and cash-flow items. The list may change each year.
+
+\textbf{2. Mark each firm.} Code \hi{1} for a nonmissing, nonzero value; otherwise code 0.
+\vspace{1mm}
+\begin{tabularx}{\textwidth}{Yccccc}
+\toprule
+\textbf{Same fiscal year} & \textbf{Cash} & \textbf{Inventory} & \textbf{Revenue} & \textbf{R\&D} & \textbf{Operating cash flow}\\
+\midrule
+Firm A & \hi{1} & \warn{1} & \hi{1} & 0 & \hi{1}\\
+Firm B & \hi{1} & 0 & \hi{1} & 0 & \hi{1}\\
+\bottomrule
+\end{tabularx}
+
+\textbf{3. Compare the marks.} Divide shared 1s by items with at least one 1:
+\[
+\mathrm{FSB}_{AB}=\frac{\text{3 shared items}}{\text{4 items present in either firm}}={\color{Teal}\mathbf{0.75}}.
+\]
+Shared zeros do not count. Repeat for every pair that year; FSB ranges from 0 to 1.
+\sourced{Hypothetical five-item illustration of Section III, pp. 259--260. R\&D enters the annual checklist because another firm reports it. FSB-Firm averages a focal firm's pairwise FSB across its industry peers, rather than only its chosen peers.}
+\end{frame}
+
+% Slide 10
+\begin{frame}{The authors check both amount-based comparisons and reporting choices}
+\small
+\begin{bullets}
+\item \textbf{Missing is not the same as zero:} With a focal value of $+10$, filling a missing value with 0 gives a distance of 10; a reported $-10$ gives 20. FSB records item availability rather than closeness in amounts.
+\item \textbf{A few large amounts can dominate:} FSB counts item presence. To check whether amounts also matter, the authors jointly examine FSB and an amount-distance measure in robustness tests.
+\item \textbf{Standardization may hide original reporting:} Compustat offers long coverage but can reshape reported items. The authors repeat the same FSB calculation using as-reported XBRL monetary tags.
+\item \textbf{XBRL brings a trade-off:} More than 7,000 possible monetary tags add detail and potential noise; the construction period is shorter. The two versions are related, but their score levels differ.
+\end{bullets}
+\sourced{Notes: Compustat: 1996--2016, 87,952 firm-years / 193.8m pairs. XBRL: 2011--2016, 15,759 firm-years / 22.1m pairs.}
+\end{frame}
+
+% Slide 11
+\begin{frame}[label=table-1]{Table 1, Panels A and B: Related measures and chosen-peer overlap}
+\small
+\textbf{Panel A: Mean scores and correlation}
+\vspace{1mm}
+\begin{tabularx}{\textwidth}{Yrr}
+\toprule
+\textbf{Measure} & \textbf{Mean} & \textbf{Correlation with FSB}\\
+\midrule
+FSB (Compustat) & \hi{0.588} & --\\
+FSB-XBRL & \hi{0.246} & \hi{0.573}\\
+\bottomrule
+\end{tabularx}
+\imp{The positive correlation suggests overlapping information. XBRL's greater reporting detail contributes to its lower average FSB.}
+
+\vspace{2mm}
+\textbf{Panel B: Mean Compustat FSB for chosen peers and matched alternatives}
+\vspace{1mm}
+\begin{tabularx}{\textwidth}{Yrrr}
+\toprule
+\textbf{Decision-maker} & \textbf{Chosen peers} & \textbf{Size--BM match} & \textbf{Difference}\\
+\midrule
+Analysts & \hi{0.683} & 0.630 & \hi{+0.053}\\
+Boards & \hi{0.692} & 0.639 & \hi{+0.053}\\
+\bottomrule
+\end{tabularx}
+\imp{Decision-makers tend to choose firms with \hi{more overlapping financial statement items} than size--book-to-market-matched alternatives. This supports preliminary validation.}
+
+\end{frame}
+
+% Slide 12
+\begin{frame}{Actual peer choices provide two different validation settings}
+\small
+\begin{tabularx}{\textwidth}{P{.25\textwidth}YY}
+\toprule
+ & \textbf{Analysts} & \textbf{Corporate boards}\\
+\midrule
+\textbf{Observed choice} & Peers named in analyst reports & Compensation peers disclosed in proxy statements\\
+\textbf{Data / period} & Investext reports via De Franco et al.; 2005 and 2008 & ISS Incentive Lab; 2006--2016\\
+\textbf{Chosen pairs retained} & 8,265 & 106,936\\
+\textbf{Average peer group size} & 4.6 & 13.5\\
+\textbf{Main objective} & Forecasting and valuation & Evaluating executives and setting pay\\
+\bottomrule
+\end{tabularx}
+\imp{Agreement across users strengthens validation, although neither user's choices are a perfect benchmark for optimal peers.}
+\sourced{Notes: Both samples exclude financial firms and observations with missing required variables. Analyst peer choices predate widespread XBRL availability; XBRL validation instead uses later analyst co-coverage. Analysts may emphasize accounting choices, while boards may emphasize similar business activities. Their different emphases on the components of FSB broaden the validation tests and strengthen external validity.}
+\end{frame}
+
+% Slide 13
+\begin{frame}{Equation (1): Does FSB predict peer selection beyond familiar characteristics?}
+\small
+\begin{equation}
+\begin{aligned}
+\mathit{Peer\ firm\ dummy}_{ikjt+1}
+  &= \beta_0 + \beta_1 FSB_{ijt} \\
+  &\quad + \sum \beta_m\mathit{Peer\ firm\ characteristic}_{m,jt} \\
+  &\quad + \sum \beta_n\mathit{Pair\ characteristic}_{n,ijt}
+    + \mathit{Year\ dummies} + \varepsilon_{ijt}.
+\end{aligned}
+\tag{1}
+\end{equation}
+\begin{itemize}\setlength{\itemsep}{5pt}
+\item \textbf{Comparison:} Match each chosen peer to a nonchosen firm using random matching, size--book-to-market matching, or size--book-to-market matching within a product-based or SIC industry.
+\item \textbf{Outcome:} 1 for a chosen peer in $t+1$; 0 for its matched alternative. $i$ is the focal firm, $j$ the candidate peer, and $k$ the analyst (omitted for boards).
+\item \textbf{Key test:} Is $\beta_1>0$? Does greater FSB in year $t$ predict selection after controlling for peer characteristics, pair characteristics, and year effects?
+\end{itemize}
+\sourced{Section IV, Equation (1), p. 262; original notation retained. Probit estimation; Tables 2--3 report marginal effects. Continuous variables are standardized. Matching creates the 50\% chosen share. SEs are clustered by firm, and also by year for panels spanning at least ten years.}
+\end{frame}
+
+% Slide 14
+\begin{frame}{Strategic-choice proxies identify favorable comparisons without observing intent}
+\small
+\begin{tabularx}{\textwidth}{P{.24\textwidth}YY}
+\toprule
+ & \textbf{Analyst peer choice} & \textbf{Board peer choice}\\
+\midrule
+\textbf{Paper's indicator} & Peer earnings-to-price is less than half the focal firm's & Peer CEO total pay is more than four times the focal CEO's\\
+\textbf{Why favorable?} & Lower earnings-to-price means a higher price multiple for positive earnings & A high-paying comparison can support a larger pay package\\
+\textbf{Illustration} & Focal E/P = 10\%; peer E/P = 4\% & Focal CEO pay = \$2m; peer CEO pay = \$9m\\
+\textbf{Observed incidence} & 8.7\% of eligible chosen peers & 7.1\% of eligible chosen peers\\
+\bottomrule
+\end{tabularx}
+\imp{These are operational indicators of potentially favorable selection, not direct observations of deliberate manipulation.}
+\sourced{Section IV and Table 1C. Examples are hypothetical. E/P uses consensus expected EPS / stock price; negative-earnings observations are excluded from the analyst strategic-choice test.}
+\end{frame}
+
+% Slide 15
+\begin{frame}{Equation (2): Among chosen peers, does lower FSB flag strategic choice?}
+\small
+\textbf{Original strategic-peer-choice specification}
+\begin{equation}
+\begin{aligned}
+\mathit{Strategic\ peer\ choice\ dummy}_{ikjt+1}
+  &= \beta_0 + \beta_1 FSB_{ijt} \\
+  &\quad + \sum \beta_m\mathit{Peer\ firm\ characteristic}_{m,jt} \\
+  &\quad + \sum \beta_n\mathit{Pair\ characteristic}_{n,ijt}
+    + \mathit{Year\ dummies} + \varepsilon_{ijt}.
+\end{aligned}
+\tag{2}
+\end{equation}
+\begin{itemize}\setlength{\itemsep}{5pt}
+\item \textbf{Outcome:} Among chosen peers only, 1 if the choice meets the paper's strategic-choice definition; 0 otherwise. $i$ is the focal firm, $j$ the chosen peer, and $k$ the analyst.
+\item \textbf{Key test:} Is $\beta_1<0$? Does lower overlap predict a more favorable valuation or pay comparison after the included controls and year effects?
+\item \textbf{Applications:} Table 4 tests analyst choices (H1); Table 6 applies the model to board choices (H3), without the analyst index $k$.
+\end{itemize}
+\sourced{Source: Section IV, Equation (2), p. 267; board application, p. 269. Original terms and subscripts retained; line breaks adjusted. Estimated by probit; tables report marginal effects. A flagged choice is a proxy for strategy, not direct evidence of intent.}
+\end{frame}
+
+\section{Main evidence}
+
+% Slide 16
+\begin{frame}[label=roadmap-section-3]{Analysts select peers with greater overlap across four matching designs}
+\small
+\begin{tabularx}{\textwidth}{Yrrrr}
+\toprule
+\textbf{Table 2: selected entries} & \textbf{Random} & \textbf{Size--BM} & \textbf{TNIC--size--BM} & \textbf{SIC--size--BM}\\
+\textbf{Original column} & (1) & (2) & (3) & (4)\\
+\midrule
+\textbf{FSB marginal effect} & \hi{0.052***} & \hi{0.057***} & \hi{0.065***} & \hi{0.052***}\\
+$z$-statistic & 14.60 & 14.62 & 9.91 & 7.47\\
+Observations & 16,530 & 16,530 & 12,684 & 11,864\\
+\bottomrule
+\end{tabularx}
+\captext{Re-typeset excerpt of Table 2, pp. 263--264. Probit marginal effects for chosen versus matched nonchosen peers; controls and year effects included. Continuous regressors standardized; firm-clustered SEs. *** = 1\% significance.}
+\begin{bullets}
+\item \textbf{Finding:} One standard deviation more FSB is associated with \hi{5.2--6.5 percentage points} more selection probability.
+\end{bullets}
+\imp{Overlap contributes information beyond the matching characteristics; this supports relevance to peer choice, not a universal probability of being selected.}
+\end{frame}
+
+% Slide 17
+\begin{frame}{Boards also select peers with greater overlap in both data sources}
+\small
+\begin{tabularx}{\textwidth}{Yrrrr}
+\toprule
+\textbf{Table 3: selected entries} & \textbf{Random} & \textbf{Size--BM} & \textbf{TNIC--size--BM} & \textbf{SIC--size--BM}\\
+\midrule
+\textbf{Compustat FSB} & \hi{0.048***} & \hi{0.084***} & \hi{0.070***} & \hi{0.077***}\\
+Original column & (1) & (3) & (5) & (7)\\
+Observations & 213,872 & 213,872 & 91,018 & 88,728\\
+\textbf{XBRL FSB} & \hi{0.039***} & \hi{0.062***} & \hi{0.067***} & \hi{0.066***}\\
+Original column & (2) & (4) & (6) & (8)\\
+Observations & 74,344 & 82,872 & 34,518 & 34,418\\
+\bottomrule
+\end{tabularx}
+\captext{Re-typeset excerpt of Table 3, pp. 265--266. Standardized-regressor probit marginal effects; controls and year effects included. SEs clustered by firm/year for Compustat, firm for XBRL. *** = 1\% significance.}
+\imp{The positive association spans valuation and compensation settings and survives the use of as-reported tags. It does not show that either peer group is optimal.}
+\end{frame}
+
+% Slide 18
+\begin{frame}{Low-overlap analyst peers more often have unusually high valuations}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{.49\textwidth}
+\small
+\begin{tabularx}{\textwidth}{Yrr}
+\toprule
+\textbf{Table 4 excerpt} & (1) & (2)\\
+\midrule
+FSB & \hi{$-0.014$***} & --\\
+Low FSB vs. high & -- & \hi{0.038***}\\
+Moderate vs. high & -- & 0.012**\\
+Observations & 6,688 & 6,688\\
+\bottomrule
+\end{tabularx}
+\end{column}
+\begin{column}{.47\textwidth}
+\textbf{Finding supporting H1}
+\begin{itemize}\setlength{\itemsep}{5pt}
+\item A one-SD decrease in FSB is associated with 1.4 percentage points more flagged choices.
+\item $0.014/0.087\approx16.1\%$ of the flagged-choice mean.
+\item Low versus high FSB differs by 3.8 percentage points.
+\end{itemize}
+\end{column}
+\end{columns}
+\captext{Table 4, p. 268: chosen peers only; flag = peer E/P below half the focal E/P. Probit marginal effects; standardized FSB, peer/pair controls and year effects; firm-clustered SEs. ** / *** = 5\% / 1\%.}
+\imp{Low overlap flags a favorable valuation comparison, consistent with H1; legitimate growth or risk differences could also produce a high multiple.}
+\end{frame}
+
+% Slide 19
+\begin{frame}{Lower overlap in analyst peer groups accompanies more optimistic forecasts}
+\small
+\begin{tabularx}{\textwidth}{Yrr}
+\toprule
+\textbf{Table 5: selected entries} & \textbf{Optimism (1)} & \textbf{Accuracy (3)}\\
+\midrule
+Average FSB of chosen peers & \hi{$-0.418$**} & \hi{0.511**}\\
+$t$-statistic & $-2.25$ & 2.56\\
+Observations & 712 & 712\\
+Year and industry effects & Yes & Yes\\
+\bottomrule
+\end{tabularx}
+\captext{Table 5, p. 270: OLS with analyst-clustered SEs; explanatory variables standardized. Optimism = 100 $\times$ (forecast EPS $-$ actual EPS) / lagged stock price; accuracy = negative absolute optimism. EPS means earnings per share. ** = 5\%.}
+\begin{bullets}
+\item \textbf{Finding supporting H2:} A one-SD lower peer-group FSB is associated with 0.418 units more optimism, about 29.3\% of its mean of 1.425.
+\end{bullets}
+\imp{The peer-choice pattern extends to forecast outcomes. The signed bias is informative, but difficult-to-forecast firms may also have unusual reporting structures.}
+\end{frame}
+
+% Slide 20
+\begin{frame}{Low-overlap board peers more often offer favorable pay comparisons}
+\small
+\begin{tabularx}{\textwidth}{Yrrr}
+\toprule
+\textbf{Table 6: selected entries} & \textbf{Compustat (1)} & \textbf{XBRL (2)} & \textbf{Terciles (3)}\\
+\midrule
+FSB / FSB-XBRL & \hi{$-0.014$***} & \warn{$-0.004$} & --\\
+$z$-statistic & $-4.61$ & $-1.20$ & --\\
+Low FSB vs. high & -- & -- & \hi{0.030***}\\
+Observations & 94,992 & 37,718 & 94,992\\
+\bottomrule
+\end{tabularx}
+\captext{Table 6, p. 271: chosen peers only; flag = peer CEO pay greater than four times focal CEO pay. Probit marginal effects; standardized FSB, peer/pair controls, year effects. Firm/year-clustered SEs; firm for XBRL. *** = 1\%.}
+\begin{bullets}
+\item \textbf{Finding supporting H3:} A one-SD lower Compustat FSB is associated with 1.4 percentage points more flagged choices: $0.014/0.071\approx19.7\%$ of the mean.
+\end{bullets}
+\imp{Compustat supports H3; the raw XBRL estimate is directionally consistent but statistically insignificant.}
+\end{frame}
+
+% Slide 21
+\begin{frame}{Lower overlap in compensation peer groups accompanies model-based overpay}
+\small
+\begin{tabularx}{\textwidth}{Yrrr}
+\toprule
+\textbf{Table 7: selected entries} & \textbf{Compustat (1)} & \textbf{XBRL (2)} & \textbf{Terciles (3)}\\
+\midrule
+Average FSB / FSB-XBRL & \hi{$-0.035$***} & \warn{$-0.006$} & --\\
+$t$-statistic & $-3.08$ & $-0.44$ & --\\
+Low FSB vs. high & -- & -- & \hi{0.069***}\\
+Observations & 6,387 & 3,374 & 6,387\\
+\bottomrule
+\end{tabularx}
+\captext{Table 7, p. 272: Tobit coefficients, not probability changes; standardized explanatory variables, CEO/firm controls and year/industry effects; firm-clustered SEs. *** = 1\%. ``Overpay'' is the positive residual from a log-pay model, set to zero otherwise.}
+\begin{bullets}
+\item \textbf{Finding supporting H4:} The Compustat estimate is negative and significant; the XBRL estimate is insignificant ($p=0.657$).
+\end{bullets}
+\imp{The association supports H4 for Compustat, but residual pay can also reflect omitted talent or responsibilities rather than inappropriate compensation.}
+\end{frame}
+
+% Slide 22
+\begin{frame}{FSB-selected peers add information about future valuation multiples}
+\small
+\begin{tabularx}{\textwidth}{Yrrr}
+\toprule
+\textbf{Table 8: one-year-ahead EVS} & \textbf{Industry (1)} & \textbf{+ Size peers (2)} & \textbf{+ FSB peers (3)}\\
+\midrule
+EVS of industry peers & 0.945*** & 0.513*** & 0.368***\\
+EVS of four closest-size peers & -- & 0.650*** & 0.551***\\
+EVS of four highest-FSB peers & -- & -- & \hi{0.625***}\\
+$R^2$ & 0.195 & 0.248 & \hi{0.318}\\
+Observations & 35,565 & 35,565 & 35,565\\
+\bottomrule
+\end{tabularx}
+\captext{Table 8, p. 273: annual Fama--MacBeth regressions, 1996--2016; reported estimates are time-series averages. EVS is the paper's enterprise-value-to-sales ratio. Industry uses SIC2; size peers are within SIC2; FSB peers are the four highest pairwise scores. Regressors standardized. *** = 1\%.}
+\imp{Adding FSB peers raises explained variation by 7 percentage points beyond industry and size peers. This demonstrates incremental fit; real-time forecasting gains still need held-out tests.}
+\end{frame}
+
+% Slide 23
+\begin{frame}{Further checks test alternative peer measures and variable definitions}
+\small
+\begin{tabularx}{\textwidth}{P{.30\textwidth}Y}
+\toprule
+\textbf{Concern} & \textbf{Authors' response}\\
+\midrule
+Overlap repeats other peer measures & Control for product similarity, investor co-search, and accounting comparability.\\
+Tiny items drive the score & Recalculate after excluding items below 0.10\% of total assets.\\
+Strategic flags depend on cutoffs & Use alternative E/P and CEO-pay thresholds, with consistent inferences.\\
+\bottomrule
+\end{tabularx}
+\imp{The authors address these concerns directly. The remaining question is what the score captures and which mechanisms explain its associations.}
+\sourced{Sources: Section III footnote 12; Section IV robustness and footnotes 23, 25, 27--29. Industry complexity is also controlled in the analyst optimism test, with consistent results.}
+\end{frame}
+
+% Slide 24
+\begin{frame}{The evidence is strongest for usefulness and weaker for strategic intent}
+\begin{bullets}
+\item \textbf{Validation:} Higher FSB is associated with actual peer selection across users, matching designs, and data sources.
+\item \textbf{Applications:} Lower FSB among chosen peers accompanies favorable comparisons, optimistic forecasts, and model-based overpay in Compustat tests.
+\item \textbf{Important qualification:} Raw XBRL does not significantly reproduce the two board strategic-outcome results.
+\item \textbf{My reading:} FSB is a useful screening signal. A low score invites further investigation of the peer choice and the task for which it is used.
+\end{bullets}
+\sourced{Synthesis of Tables 2--8. The paper interprets the signed outcomes as more consistent with strategic selection, while acknowledging unintentional mistakes and inefficient information use (Section I, p. 255).}
+\end{frame}
+
+\section{Contribution and limitations}
+
+% Slide 25
+\begin{frame}[label=roadmap-section-4]{The contribution is a transparent tool for comparing potential peers}
+\begin{bullets}
+\item \textbf{Interesting RQ:} Financial analysis requires comparable inputs; industry membership and size cannot ensure that relevant items are jointly available.
+\item \textbf{Incremental contribution:} FSB is pairwise, simple to calculate, independent of observed user choices, and usable across industry boundaries.
+\item \textbf{How it differs from related work:} The paper validates actual peer choices and their outcomes; concurrent line-item studies largely emphasize firm-level similarity or uniformity.
+\item \textbf{Fair standard:} Construct validation and practical usefulness are valuable contributions. Strategic interpretation requires stronger evidence separating incentives from legitimate peer differences.
+\end{bullets}
+\sourced{Presenter assessment informed by Sections I--II and VI. Main tests are descriptive/associational; Table 8 has a forecasting target but does not report out-of-sample predictive validation.}
+\end{frame}
+
+% Slide 26
+\begin{frame}{The same FSB score can arise from very different reporting differences}
+\begin{bullets}
+\item \textbf{What is captured:} Shared nonzero items reflect a mixture of business activities, accounting policies, reporting detail, and database coverage.
+\item \textbf{What the score cannot tell us:} A zero amount, an undisclosed separate item, and a missing database value all enter as an absent item, although their causes differ.
+\item \textbf{Why interpretation matters:} An extra breakdown can reduce overlap even if it adds useful information. Identical item sets can still contain very different amounts.
+\item \textbf{Authors' response and remaining gap:} Amount-based and materiality checks support relevance. Task-specific weights and separation of economic versus reporting differences remain open.
+\end{bullets}
+\sourced{Presenter assessment. Section III explains the zero/missing treatment as relevant-data availability, and Section VI acknowledges that economics and accounting cannot be disentangled. These are construct boundaries, not ignored design choices.}
+\end{frame}
+
+% Slide 27
+\begin{frame}{Favorable outcomes do not uniquely reveal deliberate peer manipulation}
+\small
+\begin{tabularx}{\textwidth}{P{.22\textwidth}YY}
+\toprule
+\textbf{Explanation} & \textbf{Why low FSB and favorable outcomes could coexist} & \textbf{Evidence that would help}\\
+\midrule
+Strategic selection & Decision-makers sacrifice similarity for attractive valuations or pay benchmarks & Choices respond to incentives holding available peers fixed\\
+Legitimate differences & Growth, risk, or the CEO talent market justify unusual peers & Better measures of growth opportunities and talent competition\\
+Task difficulty & Complex firms are harder to benchmark and forecast & Separate directional bias from unsigned error and independent complexity measures\\
+\bottomrule
+\end{tabularx}
+\imp{Signed optimism makes the strategic interpretation plausible, but the proxy thresholds and residual pay do not establish intent.}
+\sourced{Presenter assessment. The authors acknowledge inefficient information use, discuss talent-based contracting, test forecast accuracy, and control for industry complexity; residual within-industry differences can remain.}
+\end{frame}
+
+% Slide 28
+\begin{frame}{The design validates relevance more directly than causal effects}
+\begin{bullets}
+\item \textbf{Validation is a joint test:} Actual choices reveal benchmarkability only if users generally value suitable peers. Their incentives can also shape those choices.
+\item \textbf{Matching improves the comparison:} Chosen and nonchosen peers are made similar on observed characteristics; unobserved growth, strategy, or connections can remain different.
+\item \textbf{The outcome tests condition on selection:} They examine chosen peers, not the causal effect of replacing one peer with another. Selection into the group may matter.
+\item \textbf{Scope is uneven:} Analyst peer choices cover two years; forecast tests retain 712 observations. Financial firms are excluded. Results need not transfer unchanged to other firms or periods.
+\end{bullets}
+\sourced{Presenter assessment of Section IV. The 50\% chosen share is created by one-to-one matching and is not a population peer-selection rate. Firm/analyst clustering addresses dependence, not omitted variables.}
+\end{frame}
+
+% Slide 29
+\begin{frame}{The weaker XBRL results make measurement granularity a research question}
+\begin{bullets}
+\item \textbf{What holds:} XBRL FSB validates board peer choice in Table 3 and analyst co-coverage in Table 2.
+\item \textbf{What weakens:} Its associations with board strategic selection and CEO overpay are insignificant in Tables 6 and 7.
+\item \textbf{Authors' diagnosis:} A standardized 103-item Calcbench version gives a significant strategic-choice result. Compustat remains significant when restricted to the XBRL years.
+\item \textbf{My reading:} Extra detail may add noise, and standardization may recover useful structure. But this sensitivity leaves open which items best serve each benchmarking task.
+\end{bullets}
+\sourced{Section IV, footnote 29: standardized-XBRL strategic-choice estimate = $-0.011$, $p<0.01$. This check concerns Table 6; the paper does not report an equivalent standardized-XBRL resolution for CEO overpay.}
+\end{frame}
+
+\section{Future research}
+
+% Slide 30
+\begin{frame}[label=roadmap-section-5]{Held-out tests can show whether FSB improves practical peer selection}
+\begin{bullets}
+\item \textbf{RQ:} Does selecting peers using FSB improve valuation or forecast accuracy for firms and years not used to develop the selection rule?
+\item \textbf{Use the existing panel:} Build rules using early years, then test on later years using only filings and prices available at each prediction date.
+\item \textbf{Make a fair comparison:} Compare industry, size, product similarity, FSB, and combined rules with the same number of peers and the same valuation model.
+\item \textbf{Measure usefulness:} Compare held-out absolute and signed errors, stability across industries, and sensitivity to changing reporting detail. Success would establish predictive usefulness, without implying a causal effect of reporting overlap.
+\end{bullets}
+\sourced{Presenter research proposal extending Table 8. Compustat/XBRL pairs and valuation data supply the ingredients; operational testing requires filing-date alignment and careful avoidance of future-information leakage.}
+\end{frame}
+
+% Slide 31
+\begin{frame}{An experiment can separate incentive-driven choices from difficult comparisons}
+\begin{bullets}
+\item \textbf{Imagine a peer-selection task:} Participants choose peers from the same candidate firms and then estimate a focal firm's value. Everyone sees identical financial facts.
+\item \textbf{Vary the incentive:} Randomly reward accurate valuation or producing a favorable valuation. Separately vary whether a clear FSB comparison is provided.
+\item \textbf{Follow choices and outcomes:} Measure chosen-peer FSB, valuation multiples, estimation errors, and participants' reasons for their choices.
+\item \textbf{Interpret the pattern:} If favorable-outcome incentives lower chosen-peer FSB with the candidate set fixed, that supports deliberate trade-offs. If an FSB aid improves choices under accuracy incentives, processing difficulty also matters.
+\end{bullets}
+\sourced{Presenter research proposal. Existing pair data can supply realistic cases, but the experiment requires new data collection. Laboratory participants' choices would need validation with professional users.}
+\end{frame}
+
+% Slide 32
+\begin{frame}{Decomposing score changes can separate new economics from reporting detail}
+\begin{bullets}
+\item \textbf{RQ:} When a pair's FSB changes, does it reflect changed business activities or a different way of presenting similar activities?
+\item \textbf{Start with existing item histories:} Identify which shared items appear or disappear, distinguish zero from missing values where possible, and separate parent accounts from detailed subaccounts.
+\item \textbf{Add evidence on the source of change:} Link changes to acquisitions, operating segments, inventory policies, and tag mappings. Hand-review a sample of filings to check the classifications.
+\item \textbf{Test task relevance:} Compare how these components relate to valuation and forecast errors. The paper already explores statement-specific FSB; the new step is separating the sources of score changes.
+\end{bullets}
+\sourced{Presenter research proposal extending Section III and Table 9. Item histories provide a starting point; event data and validated mappings are additional requirements. An event association alone does not identify a causal reporting effect.}
+\end{frame}
+
+% Slide 33
+\begin{frame}{FSB helps screen peers; task relevance determines how to use it}
+\begin{bullets}
+\item \textbf{Takeaway:} Reporting overlap adds useful information to familiar industry and size comparisons.
+\item \textbf{Practical use:} Ask whether the peer reports the inputs needed for the task; investigate unusually low overlap rather than automatically rejecting the peer.
+\item \textbf{Research priority:} Test held-out performance, identify incentive-driven choices, and separate business differences from reporting differences.
+\end{bullets}
+\vspace{3mm}
+\sourced{Synthesis of the paper and presenter assessment. Discussion: Which reporting items should receive the greatest weight when the objective is valuation rather than CEO compensation?}
+\end{frame}
+
+% Slide 34
+\begin{frame}
+\vspace*{\fill}
+{\centering
+{\fontsize{28}{34}\selectfont\color{Stern}\textbf{Thank you! :D}}
+\par}
+\vspace*{\fill}
+\end{frame}
+
+\end{document}
+
